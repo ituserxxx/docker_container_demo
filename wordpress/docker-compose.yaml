@@ -1,0 +1,39 @@
+version: "3.1"
+services:
+  test-wordpress:
+    image: wordpress:latest
+    container_name: test-wordpress
+    restart: always
+    hostname:
+    ports:
+      - "3333:80"
+    depends_on:
+      - test-mysql-server
+    environment:
+      WORDPRESS_DB_HOST: test-mysql-server:3306
+      WORDPRESS_DB_USER: test
+      WORDPRESS_DB_PASSWORD: testpassword
+      WORDPRESS_DB_NAME: test
+      WORDPRESS_TABLE_PREFIX: wp_
+    volumes:
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/localtime"
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/timezone"
+      - "./wordpress/html:/var/www/html"
+  test-mysql-server:
+    image: mysql:5.7
+    container_name: test-mysql-server
+    volumes:
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/localtime"
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/timezone"
+      - "./mysql/conf:/etc/mysql/conf.d"
+      - "./mysql/data:/var/lib/mysql"
+      - "./mysql/logs:/logs"
+    ports:
+      - "3336:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: testpassword
+      MYSQL_DATABASE: test
+    command: --default-authentication-plugin=mysql_native_password
