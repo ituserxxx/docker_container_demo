@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  emby:
+    image: emby/embyserver
+    ports:
+      - "8096:8096"
+    volumes:
+      - ./emby-config:/config
+      - ./emby-media:/mnt/emby
