@@ -1,1 +1,1 @@
-iii
+docker save getmeili/meilisearch:latest | gzip > meilisearch.tar.gz
